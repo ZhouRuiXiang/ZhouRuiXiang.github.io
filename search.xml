@@ -8,7 +8,7 @@
       <link href="/2022/05/17/springaop-shi-xiao/"/>
       <url>/2022/05/17/springaop-shi-xiao/</url>
       
-        <content type="html"><![CDATA[<h3 id="失效场景"><a href="#失效场景" class="headerlink" title="失效场景"></a>失效场景</h3><ul><li>首先我们只要知道什么样的方法不能被子类重写，也就知道了aop失效的一部分情况</li></ul><p>比如 final 修饰的、static 修饰的 、private 修饰的和构造方法</p>]]></content>
+        <content type="html"><![CDATA[<h2 id="SpringAOP概念"><a href="#SpringAOP概念" class="headerlink" title="SpringAOP概念"></a>SpringAOP概念</h2><p>通过继承父类，对目标类一个或多个方法进行增强。</p><h2 id="前置知识"><a href="#前置知识" class="headerlink" title="前置知识"></a>前置知识</h2><p>静态代理：手写一个目标类的子类，增强其逻辑再调用目标方法。</p><p>动态代理：在程序执行的过程中，通过Java的反射机制，创建目标对象，增强其逻辑并调用目标方法。</p><p>区别：静态代理要增强的目标是固定的，需要编写代码，且随着目标方法的改变，增强逻辑也可能会改变。</p><table><thead><tr><th>区别</th><th>静态代理</th><th>动态代理</th></tr></thead><tbody><tr><td>实现方式</td><td>实现简单易理解</td><td>实现复杂</td></tr><tr><td>可扩展性&#x2F;灵活性</td><td>接口增加一个方法，实现类及代理类都需要增加</td><td>无需改变</td></tr></tbody></table><p>动态代理有两种两种实现方式，JDK的Proxy和第三方库的Cglib</p><p>JDK的Proxy，代理的目标必须要是某个接口实现类，<code>Proxy.newProxyInstance()</code>创建的是这个接口的另一个实现类，所以JDK的Proxy要求目标类和代理类实现同一个接口，如果目标类不存在接口，则无法实现（兄弟模式）。</p><p>Cglib则采用继承目标类的方式，重写目标类的方法，已达到增强的目的（父子模式）。</p><h2 id="SpringAOP原理"><a href="#SpringAOP原理" class="headerlink" title="SpringAOP原理"></a>SpringAOP原理</h2><p>基于JDK Proxy和Cglib动态代理，以增强目标方法，当目标类是以接口方式实现的时候，采用JDK进行动态代理（松耦合），否则采用Cglib动态代理，若目标类不是以接口方式实现且是final关键字修饰无法继承时，则无法使用AOP。</p><h2 id="AOP失效场景"><a href="#AOP失效场景" class="headerlink" title="AOP失效场景"></a>AOP失效场景</h2><p>方法不能被子类重写，aop会失效，比如 final 修饰的、static 修饰的 、private 修饰的和构造方法</p><p>调用的对象不是代理对象，调用对象还是目标对象，aop会失效，比如aop增强了目标类的A，B方法，目标类中的A方法调用目标类中的B方法，当代理对象调用A方法时，B方法便不会被增强，原因是代理对象调用了A方法，A方法里是目标对象(this)对B方法的调用，而不是代理对象对B方法的调用。</p><h2 id="AOP失效解决方案"><a href="#AOP失效解决方案" class="headerlink" title="AOP失效解决方案"></a>AOP失效解决方案</h2><p>第一种，不要在增强的方法中用当前对象调用同类的另一个方法，使用两个类，则对应的两个代理分别进行增强</p><p>第二种，修改当前类中方法嵌套调用的调用对象，由目标对象改为代理对象去调用，使用方式如下：</p><p>通过配置暴露出代理对象，SpringBoot可以通过注解<code>@EnableAspectJAutoProxy(exposeProxy = true)</code>，默认是false</p><p>通过AopContext获取当前上下文代理对象<code>AopContext.currentProxy()</code>，再通过该代理对象调用对应的方法</p>]]></content>
       
       
       
@@ -17,6 +17,8 @@
             <tag> Java </tag>
             
             <tag> Spring </tag>
+            
+            <tag> Aop </tag>
             
         </tags>
       
