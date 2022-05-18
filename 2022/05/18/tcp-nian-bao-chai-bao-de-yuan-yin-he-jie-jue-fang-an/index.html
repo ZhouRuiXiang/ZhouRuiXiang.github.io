@@ -4,11 +4,9 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="Spring-AOP失效场景, ֻ只有变Tu，才能变强">
-    <meta name="description" content="SpringAOP概念通过继承父类，对目标类一个或多个方法进行增强。
-前置知识静态代理：手写一个目标类的子类，增强其逻辑再调用目标方法。
-动态代理：在程序执行的过程中，通过Java的反射机制，创建目标对象，增强其逻辑并调用目标方法。
-区别：">
+    <meta name="keywords" content="TCP粘包/拆包的原因和解决方案, ֻ只有变Tu，才能变强">
+    <meta name="description" content="发送原因TCP使用Nagle算法优化网络传输效率或发送网络抖动导致。
+底层原理应用程序写入的字节大小大于套接字发送缓冲区的大小，会发生拆包现象，而应用程序写入数据小于套接字缓冲区大小，网卡将应用多次写入的数据发送到网络上，这将会发生粘包现象">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -22,7 +20,7 @@
 
     
 
-    <title>Spring-AOP失效场景 | 星辰大海</title>
+    <title>TCP粘包/拆包的原因和解决方案 | 星辰大海</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
@@ -381,12 +379,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/22.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/14.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">Spring-AOP失效场景</h1>
+                    <h1 class="description center-align post-title">TCP粘包/拆包的原因和解决方案</h1>
                 </div>
             </div>
         </div>
@@ -502,16 +500,12 @@
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/Java/">
-                                <span class="chip bg-color">Java</span>
+                            <a href="/tags/TCP/">
+                                <span class="chip bg-color">TCP</span>
                             </a>
                         
-                            <a href="/tags/Spring/">
-                                <span class="chip bg-color">Spring</span>
-                            </a>
-                        
-                            <a href="/tags/Aop/">
-                                <span class="chip bg-color">Aop</span>
+                            <a href="/tags/Netty/">
+                                <span class="chip bg-color">Netty</span>
                             </a>
                         
                     </div>
@@ -535,7 +529,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2022-05-17
+                    2022-05-18
                 </div>
                 
 
@@ -544,7 +538,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    709
+                    296
                 </div>
                 
 
@@ -561,39 +555,24 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h2 id="SpringAOP概念"><a href="#SpringAOP概念" class="headerlink" title="SpringAOP概念"></a>SpringAOP概念</h2><p>通过继承父类，对目标类一个或多个方法进行增强。</p>
-<h2 id="前置知识"><a href="#前置知识" class="headerlink" title="前置知识"></a>前置知识</h2><p>静态代理：手写一个目标类的子类，增强其逻辑再调用目标方法。</p>
-<p>动态代理：在程序执行的过程中，通过Java的反射机制，创建目标对象，增强其逻辑并调用目标方法。</p>
-<p>区别：静态代理要增强的目标是固定的，需要编写代码，且随着目标方法的改变，增强逻辑也可能会改变。</p>
-<table>
-<thead>
-<tr>
-<th>区别</th>
-<th>静态代理</th>
-<th>动态代理</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>实现方式</td>
-<td>实现简单易理解</td>
-<td>实现复杂</td>
-</tr>
-<tr>
-<td>可扩展性&#x2F;灵活性</td>
-<td>接口增加一个方法，实现类及代理类都需要增加</td>
-<td>无需改变</td>
-</tr>
-</tbody></table>
-<p>动态代理有两种两种实现方式，JDK的Proxy和第三方库的Cglib</p>
-<p>JDK的Proxy，代理的目标必须要是某个接口实现类，<code>Proxy.newProxyInstance()</code>创建的是这个接口的另一个实现类，所以JDK的Proxy要求目标类和代理类实现同一个接口，如果目标类不存在接口，则无法实现（兄弟模式）。</p>
-<p>Cglib则采用继承目标类的方式，重写目标类的方法，已达到增强的目的（父子模式）。</p>
-<h2 id="SpringAOP原理"><a href="#SpringAOP原理" class="headerlink" title="SpringAOP原理"></a>SpringAOP原理</h2><p>基于JDK Proxy和Cglib动态代理，以增强目标方法，当目标类是以接口方式实现的时候，采用JDK进行动态代理（松耦合），否则采用Cglib动态代理，若目标类不是以接口方式实现且是final关键字修饰无法继承时，则无法使用AOP。</p>
-<h2 id="AOP失效场景"><a href="#AOP失效场景" class="headerlink" title="AOP失效场景"></a>AOP失效场景</h2><p>方法不能被子类重写，aop会失效，比如 final 修饰的、static 修饰的 、private 修饰的和构造方法</p>
-<p>调用的对象不是代理对象，调用对象还是目标对象，aop会失效，比如aop增强了目标类的A，B方法，目标类中的A方法调用目标类中的B方法，当代理对象调用A方法时，B方法便不会被增强，原因是代理对象调用了A方法，A方法里是目标对象(this)对B方法的调用，而不是代理对象对B方法的调用。</p>
-<h2 id="AOP失效解决方案"><a href="#AOP失效解决方案" class="headerlink" title="AOP失效解决方案"></a>AOP失效解决方案</h2><p>第一种，不要在增强的方法中用当前对象调用同类的另一个方法，使用两个类，则对应的两个代理分别进行增强</p>
-<p>第二种，修改当前类中方法嵌套调用的调用对象，由目标对象改为代理对象去调用，使用方式如下：</p>
-<p>通过配置暴露出代理对象，SpringBoot可以通过注解<code>@EnableAspectJAutoProxy(exposeProxy = true)</code>，默认是false</p>
-<p>通过AopContext获取当前上下文代理对象<code>AopContext.currentProxy()</code>，再通过该代理对象调用对应的方法</p>
+                <h2 id="发送原因"><a href="#发送原因" class="headerlink" title="发送原因"></a>发送原因</h2><p>TCP使用Nagle算法优化网络传输效率或发送网络抖动导致。</p>
+<h2 id="底层原理"><a href="#底层原理" class="headerlink" title="底层原理"></a>底层原理</h2><p>应用程序写入的字节大小大于套接字发送缓冲区的大小，会发生拆包现象，而应用程序写入数据小于套接字缓冲区大小，网卡将应用多次写入的数据发送到网络上，这将会发生粘包现象；</p>
+<h2 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h2><h3 id="常见四种解决方案"><a href="#常见四种解决方案" class="headerlink" title="常见四种解决方案"></a>常见四种解决方案</h3><ol>
+<li>使用定长的编码</li>
+<li>基于分隔符（比如7d7d）</li>
+<li>基于固定行数的编码（换行符\r\n）</li>
+<li>长度编码（报文的前n个字节，声明报文剩余内容的长度），一般n为4个字节</li>
+</ol>
+<h3 id="基于上述解决方案的-Netty-解码器"><a href="#基于上述解决方案的-Netty-解码器" class="headerlink" title="基于上述解决方案的 Netty 解码器"></a>基于上述解决方案的 Netty 解码器</h3><ol>
+<li>FixedLengthFrameDecoder 类</li>
+<li>LineBasedFrameDecoder 或自定义分隔符类</li>
+<li>DelimiterBasedFrameDecoder</li>
+</ol>
+<h3 id="基于上述解决方案的自定义序列化编解码器"><a href="#基于上述解决方案的自定义序列化编解码器" class="headerlink" title="基于上述解决方案的自定义序列化编解码器"></a>基于上述解决方案的自定义序列化编解码器</h3><ol>
+<li>通常情况下，我们使用 Protostuff、Hessian2、json 序列方式比较多，另外还有一些序列化性能非常好的序列化方式也是很好的选择：</li>
+<li>专门针对 Java 语言的：Kryo，FST 等</li>
+<li>跨语言的：Protostuff（基于 protobuf 发展而来），ProtoBuf，Thrift，Avro，MsgPack 等</li>
+</ol>
 
                 
             </div>
@@ -620,7 +599,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://zhouruixiang.github.io/2022/05/17/springaop-shi-xiao/">https://zhouruixiang.github.io/2022/05/17/springaop-shi-xiao/</a>
+                    <a href="https://zhouruixiang.github.io/2022/05/18/tcp-nian-bao-chai-bao-de-yuan-yin-he-jie-jue-fang-an/">https://zhouruixiang.github.io/2022/05/18/tcp-nian-bao-chai-bao-de-yuan-yin-he-jie-jue-fang-an/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -658,16 +637,12 @@
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/Java/">
-                                    <span class="chip bg-color">Java</span>
+                                <a href="/tags/TCP/">
+                                    <span class="chip bg-color">TCP</span>
                                 </a>
                             
-                                <a href="/tags/Spring/">
-                                    <span class="chip bg-color">Spring</span>
-                                </a>
-                            
-                                <a href="/tags/Aop/">
-                                    <span class="chip bg-color">Aop</span>
+                                <a href="/tags/Netty/">
+                                    <span class="chip bg-color">Netty</span>
                                 </a>
                             
                         </div>
@@ -845,6 +820,63 @@
             <div class="article-badge left-badge text-color">
                 <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
+                <a href="/2022/05/18/ling-kao-bei/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/20.jpg" class="responsive-img" alt="零拷贝">
+                        
+                        <span class="card-title">零拷贝</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2022-05-18
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/Java/" class="post-category">
+                                    Java
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/TCP/">
+                        <span class="chip bg-color">TCP</span>
+                    </a>
+                    
+                    <a href="/tags/Netty/">
+                        <span class="chip bg-color">Netty</span>
+                    </a>
+                    
+                    <a href="/tags/%E9%9B%B6%E6%8B%B7%E8%B4%9D/">
+                        <span class="chip bg-color">零拷贝</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
                 <a href="/2022/05/18/jia-mi-suan-fa-qu-bie/">
                     <div class="card-image">
                         
@@ -861,9 +893,9 @@
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2022-05-18
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-05-18
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
@@ -893,64 +925,6 @@
                     
                     <a href="/tags/BASE64/">
                         <span class="chip bg-color">BASE64</span>
-                    </a>
-                    
-                </div>
-                
-            </div>
-        </div>
-        
-        
-        <div class="article col s12 m6" data-aos="fade-up">
-            <div class="article-badge right-badge text-color">
-                本篇&nbsp;<i class="far fa-dot-circle"></i>
-            </div>
-            <div class="card">
-                <a href="/2022/05/17/springaop-shi-xiao/">
-                    <div class="card-image">
-                        
-                        
-                        <img src="/medias/featureimages/22.jpg" class="responsive-img" alt="Spring-AOP失效场景">
-                        
-                        <span class="card-title">Spring-AOP失效场景</span>
-                    </div>
-                </a>
-                <div class="card-content article-content">
-                    <div class="summary block-with-text">
-                        
-                            
-                        
-                    </div>
-                    <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2022-05-17
-                            </span>
-                        <span class="publish-author">
-                            
-                            <i class="fas fa-bookmark fa-fw icon-category"></i>
-                            
-                            <a href="/categories/Java/" class="post-category">
-                                    Java
-                                </a>
-                            
-                            
-                        </span>
-                    </div>
-                </div>
-
-                
-                <div class="card-action article-tags">
-                    
-                    <a href="/tags/Java/">
-                        <span class="chip bg-color">Java</span>
-                    </a>
-                    
-                    <a href="/tags/Spring/">
-                        <span class="chip bg-color">Spring</span>
-                    </a>
-                    
-                    <a href="/tags/Aop/">
-                        <span class="chip bg-color">Aop</span>
                     </a>
                     
                 </div>
