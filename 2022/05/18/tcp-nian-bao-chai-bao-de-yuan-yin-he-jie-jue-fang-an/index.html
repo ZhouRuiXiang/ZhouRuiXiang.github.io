@@ -5,7 +5,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="keywords" content="TCP粘包/拆包的原因和解决方案, ֻ只有变Tu，才能变强">
-    <meta name="description" content="发送原因TCP使用Nagle算法优化网络传输效率或发送网络抖动导致。
+    <meta name="description" content="产生原因TCP使用Nagle算法优化网络传输效率或发送网络抖动导致。
 底层原理应用程序写入的字节大小大于套接字发送缓冲区的大小，会发生拆包现象，而应用程序写入数据小于套接字缓冲区大小，网卡将应用多次写入的数据发送到网络上，这将会发生粘包现象">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -570,7 +570,7 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h2 id="发送原因"><a href="#发送原因" class="headerlink" title="发送原因"></a>发送原因</h2><p>TCP使用Nagle算法优化网络传输效率或发送网络抖动导致。</p>
+                <h2 id="产生原因"><a href="#产生原因" class="headerlink" title="产生原因"></a>产生原因</h2><p>TCP使用Nagle算法优化网络传输效率或发送网络抖动导致。</p>
 <h2 id="底层原理"><a href="#底层原理" class="headerlink" title="底层原理"></a>底层原理</h2><p>应用程序写入的字节大小大于套接字发送缓冲区的大小，会发生拆包现象，而应用程序写入数据小于套接字缓冲区大小，网卡将应用多次写入的数据发送到网络上，这将会发生粘包现象；</p>
 <h2 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h2><h3 id="常见四种解决方案"><a href="#常见四种解决方案" class="headerlink" title="常见四种解决方案"></a>常见四种解决方案</h3><ol>
 <li>使用定长的编码</li>
